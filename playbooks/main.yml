@@ -1,0 +1,7 @@
+- name: Install Packages through Loop
+  hosts: remote_servers
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.11
+  become: yes
+  roles:
+    - install_packages

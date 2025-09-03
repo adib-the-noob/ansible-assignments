@@ -1,0 +1,23 @@
+- name: Install Each Packages
+  ansible.builtin.package:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  loop: "{{ packages }}"
+
+  # Registering the result
+  register: package_results
+  until: package_results is succeeded
+  retries: 3
+  delay: 5
+  ignore_errors: yes
+
+  # Logging
+- name: Log the installation output
+  ansible.builtin.lineinfile:
+    path: /var/log/ansible-installed.log
+    line: "[{{ 'SUCCESS' if item.failed is not defined or not item.failed else 'FAILED' }}]: [{{ item.item.name }} - {{ item.item.state }}]: [{{ '%Y-%m-%d %H:%M:%S' | strftime }}]"
+
+    # creating the file
+    create: yes
+    insertafter: EOF
+  loop: "{{ package_results.results }}"

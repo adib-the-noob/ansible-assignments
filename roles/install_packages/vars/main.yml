@@ -1,0 +1,11 @@
+packages:
+  - name: "git"
+    state: absent
+  - name: "vim"
+    state: absent
+  - name: "curl"
+    state: absent 
+  - name: "wget"
+    state: present  
+  - name: "nginx"
+    state: present
